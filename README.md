@@ -1,10 +1,10 @@
-# AWS ECR Docker Proxy
+# AWS ECR Proxy
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/whitfin/aws-ecr-docker-proxy/ci.yml?branch=main)](https://github.com/whitfin/aws-ecr-docker-proxy/actions) ![Docker Image Version](https://img.shields.io/docker/v/whitfin/aws-ecr-docker-proxy)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/whitfin/aws-ecr-proxy/ci.yml?branch=main)](https://github.com/whitfin/aws-ecr-proxy/actions) ![Docker Image Version](https://img.shields.io/docker/v/whitfin/aws-ecr-proxy)
 
-The AWS ECR Docker Proxy is a very simple Nginx proxy to allow forwarding requests through to
-Amazon ECR. Responses are cached locally to optimize throughput, and credentials can be
-handled by either key/secret pairs or AWS instance roles.
+The AWS ECR Proxy is a very simple Nginx proxy to allow forwarding requests through to Amazon
+ECR. Responses are cached locally to optimize throughput, and credentials can be handled by
+either key/secret pairs or AWS instance roles.
 
 This project was originally based on the existing [aws-ecr-http-proxy](https://github.com/Lotto24/aws-ecr-http-proxy)
 repository. As that project has not had any major changes in a few years and appears to no longer
