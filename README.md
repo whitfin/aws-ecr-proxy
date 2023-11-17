@@ -13,28 +13,7 @@ will be incompatible moving forward. The original forked code will live on the `
 a point of reference, and the `main` branch will carry the new line of changes. Obviously major
 credit goes to the original author(s)!
 
-## Configuration:
-
-The AWS ECR Proxy is packaged into a Docker container. As such, all configuration is
-done by providing environment variables at container startup. The following values
-are currently supported:
-
-| Name                    | Description                                                                 | Default              | Required                                   |
-| ----------------------- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| AWS_REGION              | The AWS Region for AWS ECR login                                            | None                 | Yes                                        |
-| AWS_ACCESS_KEY_ID       | The AWS Access Key for AWS ECR login                                        | None                 | Yes, if not using `AWS_INSTANCE_AUTH=true` |
-| AWS_SECRET_ACCESS_KEY   | The AWS Secret Access Key for AWS ECR login                                 | None                 | Yes, if not using `AWS_INSTANCE_AUTH=true` |
-| AWS_INSTANCE_AUTH       | Whether or not to enable IAM based authentication                           | false                | No                                         |
-| PROXY_CACHE_KEY         | The key used in Nginx to cache response context                             | $uri                 | No                                         |
-| PROXY_CACHE_LIMIT       | The maximum size the Nginx cache can grow to                                | 64gb                 | No                                         |
-| PROXY_DNS_RESOLVER      | The DNS server used by the proxy to resolve hosts                           | 8.8.8.8 (Google DNS) | No                                         |
-| PROXY_ECR_ENDPOINT      | The endpoint of the AWS ECR repository to proxy requests to                 | None                 | Yes                                        |
-| PROXY_NAMESPACE_PATTERN | The pattern used to include or exclude from the images available on AWS ECR | `.*`                 | No                                         |
-| PROXY_PORT              | The port that the Nginx proxy will listen for traffic on                    | 5000                 | No                                         |
-| PROXY_SSL_KEY           | The path to the TLS key to use when enabling SSL traffic                    | None                 | No                                         |
-| PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None                 | No                                         |
-
-## Example Usage
+## Basic Usage
 
 Below is a minimal example of running the proxy using an AWS key/secret pair. These
 are the minimal set of parameters you need to supply if using the defaults for all
@@ -63,6 +42,27 @@ docker pull localhost:5000/my-ecr-image
 
 The layers will be cached in Nginx to avoid re-pulling them from ECR repeatedly,
 in theory saving bandwidth and reducing latency.
+
+## Configuration
+
+The AWS ECR Proxy is packaged into a Docker container. As such, all configuration is
+done by providing environment variables at container startup. The following values
+are currently supported:
+
+| Name                    | Description                                                                 | Default              | Required                                   |
+| ----------------------- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
+| AWS_REGION              | The AWS Region for AWS ECR login                                            | None                 | Yes                                        |
+| AWS_ACCESS_KEY_ID       | The AWS Access Key for AWS ECR login                                        | None                 | Yes, if not using `AWS_INSTANCE_AUTH=true` |
+| AWS_SECRET_ACCESS_KEY   | The AWS Secret Access Key for AWS ECR login                                 | None                 | Yes, if not using `AWS_INSTANCE_AUTH=true` |
+| AWS_INSTANCE_AUTH       | Whether or not to enable IAM based authentication                           | false                | No                                         |
+| PROXY_CACHE_KEY         | The key used in Nginx to cache response context                             | $uri                 | No                                         |
+| PROXY_CACHE_LIMIT       | The maximum size the Nginx cache can grow to                                | 64gb                 | No                                         |
+| PROXY_DNS_RESOLVER      | The DNS server used by the proxy to resolve hosts                           | 8.8.8.8 (Google DNS) | No                                         |
+| PROXY_ECR_ENDPOINT      | The endpoint of the AWS ECR repository to proxy requests to                 | None                 | Yes                                        |
+| PROXY_NAMESPACE_PATTERN | The pattern used to include or exclude from the images available on AWS ECR | `.*`                 | No                                         |
+| PROXY_PORT              | The port that the Nginx proxy will listen for traffic on                    | 5000                 | No                                         |
+| PROXY_SSL_KEY           | The path to the TLS key to use when enabling SSL traffic                    | None                 | No                                         |
+| PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None                 | No                                         |
 
 ## Namespace Exclusion
 
