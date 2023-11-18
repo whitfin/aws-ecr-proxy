@@ -3,7 +3,7 @@ set -e
 
 # locate the existing auth token stored inside the nginx configuration
 EXISTING_TOKEN=$(grep X-Forwarded-User $NGINX_CONFIG_DIR/nginx.conf)
-EXISTING_TOKEN=$(awk '{ print $4 }' | uniq | tr -d "\n\r")
+EXISTING_TOKEN=$(echo ${ESC}{EXISTING_TOKEN} | awk '{ print $4 }' | uniq | tr -d "\n\r")
 
 # retry till new get new token
 while true; do
