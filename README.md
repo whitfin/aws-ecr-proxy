@@ -9,9 +9,10 @@ either key/secret pairs or AWS instance roles.
 This project was originally based on the existing [aws-ecr-http-proxy](https://github.com/Lotto24/aws-ecr-http-proxy)
 repository. As that project has not had any major changes in a few years and appears to no longer
 be maintained (at least for now), this repository was separated out as some of the planned changes
-will be incompatible moving forward. The original forked code will live on the `legacy` branch as
-a point of reference, and the `main` branch will carry the new line of changes. Obviously major
-credit goes to the original author(s)!
+will be incompatible moving forward (and to separate issues, PRs, etc).
+
+The original forked code will live on the `legacy` branch as a point of reference, and the `main`
+will carry the new line of changes. Obviously major credit goes to the original author(s)!
 
 ## Basic Usage
 
