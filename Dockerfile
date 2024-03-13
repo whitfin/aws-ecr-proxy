@@ -10,7 +10,7 @@ RUN apk add -v --no-cache \
     mkdir /cache && \
     addgroup -g 110 nginx && \
     adduser -u 110 -D -S -h /cache -s /sbin/nologin -G nginx nginx && \
-    pip install --upgrade pip awscli==1.30.1 && \
+    pip install --break-system-packages --upgrade pip awscli==1.30.1 && \
     apk -v --purge del py-pip
 
 COPY bin/*.sh /startup.sh
