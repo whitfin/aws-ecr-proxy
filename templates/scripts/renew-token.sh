@@ -10,6 +10,7 @@ while true; do
   NEW_TOKEN=$(aws ecr get-login --no-include-email | awk '{ print $6 }')
   if [ ! -z "${ESC}{NEW_TOKEN}" ]; then
     break
+    echo "Success: Got token"
   fi
   echo "Warning: unable to get new token, waiting before retry..."
   sleep 30
@@ -24,4 +25,6 @@ sed -i "s|${ESC}{EXISTING_TOKEN%??}|${ESC}{NEW_TOKEN}|g" $NGINX_CONFIG_DIR/nginx
 # reload the nginx service if it was runnign
 if test -f $NGINX_DIR/logs/nginx.pid; then
   nginx -s reload
+  echo "Success: nginx reloaded."
 fi
+echo "Done"
