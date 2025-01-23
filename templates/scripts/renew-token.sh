@@ -1,30 +1,30 @@
 #!/bin/sh
 set -e
 
-# locate the existing auth token stored inside the nginx configuration
-EXISTING_TOKEN=$(grep X-Forwarded-User $NGINX_CONFIG_DIR/nginx.conf)
-EXISTING_TOKEN=$(echo ${ESC}{EXISTING_TOKEN} | awk '{ print $4 }' | uniq | tr -d "\n\r")
-
+echo "Running: renew-token.sh"
 # retry till new get new token
 while true; do
-  NEW_TOKEN=$(aws ecr get-login --no-include-email | awk '{ print $6 }')
+  NEW_TOKEN=$(aws ecr get-login --no-include-email --region $AWS_REGION | awk '{ print $6 }')
   if [ ! -z "${ESC}{NEW_TOKEN}" ]; then
     break
-    echo "Success: Got token"
   fi
   echo "Warning: unable to get new token, waiting before retry..."
   sleep 30
 done
-
+echo "Success: New token"
 # convert the token into the base64 format we need to supply to nginx
 NEW_TOKEN=$(echo AWS:${ESC}{NEW_TOKEN} | base64 | tr -d "[:space:]")
 
-# replace the existing token with the new token we retrieved from AWS in the config
-sed -i "s|${ESC}{EXISTING_TOKEN%??}|${ESC}{NEW_TOKEN}|g" $NGINX_CONFIG_DIR/nginx.conf
+# Debugging
+# echo "New token: ${ESC}{NEW_TOKEN}"
 
-# reload the nginx service if it was runnign
+# create the token file with the new token to fix ecr tokens being too long
+echo -n "Basic ${ESC}{NEW_TOKEN}" > $NGINX_CONFIG_DIR/token
+
+# reload the nginx service if it was running
 if test -f $NGINX_DIR/logs/nginx.pid; then
-  nginx -s reload
-  echo "Success: nginx reloaded."
+  nginx -s reload || echo "Warning: Failed to reload nginx"
+  echo "Reloaded: nginx"
+else
+  echo "Warning: nginx not running"
 fi
-echo "Done"
