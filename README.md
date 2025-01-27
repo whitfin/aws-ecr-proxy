@@ -66,13 +66,13 @@ are currently supported:
 | PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None             | No                                         |
 
 If you require further customization of the Nginx configuration, you can provide
-files inside `/usr/local/openresty/nginx/conf`. These files will be loaded into
-the Nginx configuration (store in subdirectories as necessary):
+files inside the Nginx configuration directory located at `/usr/local/openresty/nginx/conf`.
+These files will be loaded into the Nginx configuration (store in subdirectories as necessary):
 
-| Pattern            | Notes                                                          |
-|--------------------|----------------------------------------------------------------|
-| http/{name}.conf   | Configuration files to load inside the `http` configuration.   |
-| server/{name}.conf | Configuration files to load inside the `server` configuration. |
+| Pattern              | Notes                                                          |
+|----------------------|----------------------------------------------------------------|
+| `http/{name}.conf`   | Configuration files to load inside the `http` configuration.   |
+| `server/{name}.conf` | Configuration files to load inside the `server` configuration. |
 
 These configurations will be loaded automatically by Nginx on startup, allowing you
 to configure log formats, payload sizes, etc. based on your desired deployment.
