@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.21.4.3-alpine
+FROM openresty/openresty:1.27.1.1-1-alpine
 USER root
 
 RUN apk add -v --no-cache \
