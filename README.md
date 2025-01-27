@@ -46,7 +46,7 @@ in theory saving bandwidth and reducing latency.
 
 ## Configuration
 
-The AWS ECR Proxy is packaged into a Docker container. As such, all configuration is
+The AWS ECR Proxy is packaged into a Docker container. As such, most configuration is
 done by providing environment variables at container startup. The following values
 are currently supported:
 
@@ -65,16 +65,16 @@ are currently supported:
 | PROXY_SSL_KEY           | The path to the TLS key to use when enabling SSL traffic                    | None             | No                                         |
 | PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None             | No                                         |
 
-If you wish to customize the `http` segment of the nginx configuration, you can do
-so by storing files inside `/usr/local/openresty/nginx/conf`. Files must be named
-based on the following patterns (in subdirectories as necessary):
+If you require further customization of the Nginx configuration, you can provide
+files inside `/usr/local/openresty/nginx/conf`. These files will be loaded into
+the Nginx configuration (store in subdirectories as necessary):
 
-* `http/{name}.conf`
-  * Loaded inside the `http` nginx block
-* `server/{name}.conf`
-  * Loaded inside the `server` nginx block.
+| Pattern            | Notes                                                          |
+|--------------------|----------------------------------------------------------------|
+| http/{name}.conf   | Configuration files to load inside the `http` configuration.   |
+| server/{name}.conf | Configuration files to load inside the `server` configuration. |
 
-These configurations will be loaded automatically by nginx on startup, allowing you
+These configurations will be loaded automatically by Nginx on startup, allowing you
 to configure log formats, payload sizes, etc. based on your desired deployment.
 
 ## Namespace Exclusion
