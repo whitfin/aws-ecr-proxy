@@ -39,7 +39,6 @@ fi
 if [ "$PROXY_SSL_KEY" ] && [ "$PROXY_SSL_CERTIFICATE"]; then
   export PROXY_LISTENER_SCHEME="https"
   export PROXY_LISTENER_OPTIONS="ssl $PROXY_LISTENER_OPTIONS"
-  export PROXY_LISTENER_INCLUDES="include $NGINX_CONFIG_DIR/ssl.conf;"
 else
   export PROXY_LISTENER_SCHEME="http"
 fi
@@ -50,6 +49,11 @@ do
     mkdir -p $(dirname $config)
     cat /templates/$config | ESC='$' envsubst > $config
 done
+
+# drop the ssl configuration if disabled
+if [ "$PROXY_LISTENER_SCHEME" == "http" ]; then
+  rm $NGINX_CONFIG_DIR/server/ssl.conf
+fi
 
 # drop the credentials file if we're going to use the
 if [ "$AWS_INSTANCE_AUTH" == "true" ]; then

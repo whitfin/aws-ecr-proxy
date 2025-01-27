@@ -65,6 +65,18 @@ are currently supported:
 | PROXY_SSL_KEY           | The path to the TLS key to use when enabling SSL traffic                    | None             | No                                         |
 | PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None             | No                                         |
 
+If you wish to customize the `http` segment of the nginx configuration, you can do
+so by storing files inside `/usr/local/openresty/nginx/conf`. Files must be named
+based on the following patterns (in subdirectories as necessary):
+
+* `http/{name}.conf`
+  * Loaded inside the `http` nginx block
+* `server/{name}.conf`
+  * Loaded inside the `server` nginx block.
+
+These configurations will be loaded automatically by nginx on startup, allowing you
+to configure log formats, payload sizes, etc. based on your desired deployment.
+
 ## Namespace Exclusion
 
 It's possible you have many images in AWS ECR, and you only wish to proxy through
