@@ -36,7 +36,7 @@ if [ "$AWS_INSTANCE_AUTH" != "true" ]; then
 fi
 
 # handle SSL configuration properties if we have both key + cert
-if [ "$PROXY_SSL_KEY" ] && [ "$PROXY_SSL_CERTIFICATE"]; then
+if [ "$PROXY_SSL_KEY" ] && [ "$PROXY_SSL_CERTIFICATE" ]; then
   export PROXY_LISTENER_SCHEME="https"
   export PROXY_LISTENER_OPTIONS="ssl $PROXY_LISTENER_OPTIONS"
 else
