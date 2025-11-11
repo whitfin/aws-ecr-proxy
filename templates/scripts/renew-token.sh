@@ -14,7 +14,7 @@ done
 echo "Successfully fetched new token"
 
 # create the token file with the new token header
-echo -n "$TOKEN" > $NGINX_CONFIG_DIR/.ecr-token
+echo -n "Basic ${ESC}TOKEN" > $NGINX_CONFIG_DIR/.ecr-token
 
 # reload the nginx service if it was running
 if test -f $NGINX_DIR/logs/nginx.pid; then
