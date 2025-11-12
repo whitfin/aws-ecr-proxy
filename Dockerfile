@@ -22,8 +22,8 @@ RUN apk add -v --no-cache \
     chown -R nginx:nginx /var/cache/nginx /var/lib/nginx /var/log/nginx && \
     chmod -R 755 /var/cache/nginx && \
     \
-    # Install the AWS CLI with a pinned version to make sure it works...
-    pip install --break-system-packages --upgrade pip awscli==1.30.1 && \
+    # Install the AWS CLI, have to force install into system packages
+    pip install --break-system-packages --upgrade pip awscli && \
     apk -v --purge del py-pip
 
 # Copy local file requirements
