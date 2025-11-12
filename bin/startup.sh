@@ -39,12 +39,6 @@ do
     cat /templates/$config | ESC='$' envsubst > $config
 done
 
-# verify that we have a valid AWS seession
-if ! aws sts get-caller-identity > /dev/null 2>&1; then
-  echo "Unable to verify AWS credentials, please check your configuration."
-  exit 1
-fi
-
 # drop the ssl configuration if disabled
 if [ "$PROXY_LISTENER_SCHEME" == "http" ]; then
   rm $NGINX_CONFIG_DIR/server/certs.conf
@@ -53,6 +47,12 @@ fi
 # drop the credentials file if we're going to use the
 if [ "$AWS_INSTANCE_AUTH" == "true" ]; then
   rm /root/.aws/credentials
+fi
+
+# verify that we have a valid AWS session
+if ! aws sts get-caller-identity > /dev/null 2>&1; then
+  echo "Unable to verify AWS credentials, please check your configuration."
+  exit 1
 fi
 
 # cmd
