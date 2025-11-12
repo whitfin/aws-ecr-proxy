@@ -1,6 +1,10 @@
 #!/bin/sh
 set -e
 
+# default values for the AWS vars
+export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-''}
+export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-''}
+
 # default values for the nginx config
 export NGINX_DIR=/usr/local/openresty/nginx
 export NGINX_CONFIG_DIR=$NGINX_DIR/conf
@@ -30,23 +34,22 @@ if [ "$PROXY_SSL_KEY" ] && [ "$PROXY_SSL_CERTIFICATE" ]; then
   export PROXY_LISTENER_OPTIONS="ssl $PROXY_LISTENER_OPTIONS"
 else
   export PROXY_LISTENER_SCHEME="http"
+  export PROXY_LISTENER_OPTIONS=""
 fi
+
+# fetch the current environment variables for replacement
+EXPORTED_VARIABLES="$(env | cut -d= -f1 | sed 's/.*/\$&/')"
 
 # run through our replacement of environment variables in the files
 for config in $(find /templates -type f -print | cut -d'/' -f3-)
 do
     mkdir -p $(dirname $config)
-    cat /templates/$config | ESC='$' envsubst > $config
+    envsubst "$EXPORTED_VARIABLES" < /templates/$config > $config
 done
 
 # drop the ssl configuration if disabled
 if [ "$PROXY_LISTENER_SCHEME" == "http" ]; then
   rm $NGINX_CONFIG_DIR/server/certs.conf
-fi
-
-# drop the credentials file if we're going to use the
-if [ "$AWS_INSTANCE_AUTH" == "true" ]; then
-  rm /root/.aws/credentials
 fi
 
 # verify that we have a valid AWS session
