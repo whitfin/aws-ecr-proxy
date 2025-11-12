@@ -1,9 +1,6 @@
 #!/bin/sh
 set -e
 
-# default values for the aws config
-export AWS_INSTANCE_AUTH=${AWS_INSTANCE_AUTH:-'false'}
-
 # default values for the nginx config
 export NGINX_DIR=/usr/local/openresty/nginx
 export NGINX_CONFIG_DIR=$NGINX_DIR/conf
@@ -22,17 +19,9 @@ if [ -z "$PROXY_ECR_ENDPOINT" ] ; then
 fi
 
 # we also need the endpoints region
-if [ -z "$AWS_REGION" ] ; then
+if [ -z "$AWS_REGION" ]; then
   echo "AWS_REGION must be provided."
   exit 1
-fi
-
-# we need at least one form of AWS authentication
-if [ "$AWS_INSTANCE_AUTH" != "true" ]; then
-  if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
-    echo "AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY must be provided."
-    exit 1
-  fi
 fi
 
 # handle SSL configuration properties if we have both key + cert
@@ -49,6 +38,12 @@ do
     mkdir -p $(dirname $config)
     cat /templates/$config | ESC='$' envsubst > $config
 done
+
+# verify that we have a valid AWS seession
+if ! aws sts get-caller-identity > /dev/null 2>&1; then
+  echo "Unable to verify AWS credentials, please check your configuration."
+  exit 1
+fi
 
 # drop the ssl configuration if disabled
 if [ "$PROXY_LISTENER_SCHEME" == "http" ]; then
