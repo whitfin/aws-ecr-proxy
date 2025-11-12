@@ -52,16 +52,13 @@ done
 
 # drop the ssl configuration if disabled
 if [ "$PROXY_LISTENER_SCHEME" == "http" ]; then
-  rm $NGINX_CONFIG_DIR/server/ssl.conf
+  rm $NGINX_CONFIG_DIR/server/certs.conf
 fi
 
 # drop the credentials file if we're going to use the
 if [ "$AWS_INSTANCE_AUTH" == "true" ]; then
   rm /root/.aws/credentials
 fi
-
-# add the auth token in default.conf
-sh /scripts/renew-token.sh
 
 # cmd
 exec "$@"
