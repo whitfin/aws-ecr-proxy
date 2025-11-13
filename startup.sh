@@ -22,11 +22,6 @@ if [ -z "$PROXY_ECR_ENDPOINT" ] ; then
   exit 1
 fi
 
-# we also need the endpoints region
-if [ -z "$AWS_REGION" ]; then
-  echo "AWS_REGION must be provided."
-  exit 1
-fi
 
 # handle SSL configuration properties if we have both key + cert
 if [ "$PROXY_SSL_KEY" ] && [ "$PROXY_SSL_CERTIFICATE" ]; then
