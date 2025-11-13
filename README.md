@@ -50,19 +50,20 @@ The AWS ECR Proxy is packaged into a Docker container. As such, most configurati
 done by providing environment variables at container startup. The following values
 are currently supported:
 
-| Name                    | Description                                                                 | Default          | Required                        |
-| ----------------------- | --------------------------------------------------------------------------- | ---------------- | ------------------------------- |
-| AWS_REGION              | The AWS Region for AWS ECR login                                            | None             | Yes                             |
-| AWS_ACCESS_KEY_ID       | The AWS Access Key for AWS ECR login                                        | None             | Yes, unless using instance auth |
-| AWS_SECRET_ACCESS_KEY   | The AWS Secret Access Key for AWS ECR login                                 | None             | Yes, unless using instance auth |
-| PROXY_CACHE_KEY         | The key used in Nginx to cache response context                             | $uri             | No                              |
-| PROXY_CACHE_LIMIT       | The maximum size the Nginx cache can grow to                                | 64gb             | No                              |
-| PROXY_DNS_RESOLVER      | The DNS server used by the proxy to resolve hosts                           | 8.8.8.8 (Google) | No                              |
-| PROXY_ECR_ENDPOINT      | The endpoint of the AWS ECR repository to proxy requests to                 | None             | Yes                             |
-| PROXY_NAMESPACE_PATTERN | The pattern used to include or exclude from the images available on AWS ECR | `.*`             | No                              |
-| PROXY_PORT              | The port that the Nginx proxy will listen for traffic on                    | 5000             | No                              |
-| PROXY_SSL_KEY           | The path to the TLS key to use when enabling SSL traffic                    | None             | No                              |
-| PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None             | No                              |
+| Name                    | Description                                                                 | Default          | Required                            |
+| ----------------------- | --------------------------------------------------------------------------- | ---------------- | ----------------------------------- |
+| AWS_REGION              | The AWS Region for AWS ECR login                                            | None             | Yes                                 |
+| AWS_ACCESS_KEY_ID       | The AWS Access Key for AWS ECR login                                        | None             | Yes, unless using instance auth     |
+| AWS_SECRET_ACCESS_KEY   | The AWS Secret Access Key for AWS ECR login                                 | None             | Yes, unless using instance auth     |
+| PROXY_CACHE_KEY         | The key used in Nginx to cache response context                             | $uri             | No                                  |
+| PROXY_CACHE_LIMIT       | The maximum size the Nginx cache can grow to                                | 64gb             | No                                  |
+| PROXY_DNS_RESOLVER      | The DNS server used by the proxy to resolve hosts                           | 8.8.8.8 (Google) | No                                  |
+| PROXY_ECR_ENDPOINT      | The endpoint of the AWS ECR repository to proxy requests to                 | None             | Yes                                 |
+| PROXY_NAMESPACE_PATTERN | The pattern used to include or exclude from the images available on AWS ECR | `.*`             | No                                  |
+| PROXY_PORT              | The port that the Nginx proxy will listen for traffic on                    | 5000             | No                                  |
+| PROXY_SSL_KEY           | The path to the TLS key to use when enabling SSL traffic                    | None             | No                                  |
+| PROXY_SSL_CERTIFICATE   | The path to the TLS certificate to use when enabling SSL traffic            | None             | No                                  |
+| PROXY_WORKER_PROCESSES  | The number of Nginx worker processes used when passing traffic              | 1                | No, but set to `auto` for read-only |
 
 If you require further customization of the Nginx configuration, you can provide
 files inside the Nginx configuration directory located at `/usr/local/openresty/nginx/conf`.
