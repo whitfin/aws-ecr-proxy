@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.27.1.2-alpine-fat
+FROM openresty/openresty:1.27.1.2-alpine-apk
 
 # Add required dependnecies
 RUN apk add -v --no-cache \
@@ -6,8 +6,6 @@ RUN apk add -v --no-cache \
         gettext \
         python3 \
         py-pip \
-    # Install LuaRocks dependencies
-    && luarocks install ngx_aws_token \
     # Create nginx directories
     && mkdir -p \
         /var/cache/nginx/proxy \
@@ -26,6 +24,11 @@ RUN apk add -v --no-cache \
     # Install the AWS CLI, have to force install into system packages
     && pip install --break-system-packages --upgrade pip awscli \
     && apk -v --purge del py-pip
+
+# Install the ngx_aws_token module, manually because LuaRocks bloats the image
+ADD --chown=nginx:nginx \
+        https://raw.githubusercontent.com/whitfin/ngx_aws_token/1.0/lua/ngx_aws_token.lua \
+        /usr/local/openresty/lualib/ngx_aws_token.lua
 
 # Copy local file requirements
 COPY bin/startup.sh /startup.sh
