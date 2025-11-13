@@ -1,30 +1,31 @@
-FROM openresty/openresty:1.27.1.2-alpine-slim
+FROM openresty/openresty:1.27.1.2-alpine-fat
 
 # Add required dependnecies
 RUN apk add -v --no-cache \
         bind-tools \
         gettext \
         python3 \
-        py-pip && \
-    \
+        py-pip \
+    # Install LuaRocks dependencies
+    && luarocks install ngx_aws_token \
     # Create nginx directories
-    mkdir -p \
+    && mkdir -p \
         /var/cache/nginx/proxy \
         /var/cache/nginx/proxy_temp \
         /var/lib/nginx \
-        /var/log/nginx && \
+        /var/log/nginx \
     \
     # Create the nginx user
-    addgroup -g 101 nginx && \
-    adduser -u 101 -D -S -h /var/lib/nginx -s /sbin/nologin -G nginx nginx && \
+    && addgroup -g 101 nginx \
+    && adduser -u 101 -D -S -h /var/lib/nginx -s /sbin/nologin -G nginx nginx \
     \
     # Configure ownership and permissions of our nginx directories
-    chown -R nginx:nginx /var/cache/nginx /var/lib/nginx /var/log/nginx && \
-    chmod -R 755 /var/cache/nginx && \
+    && chown -R nginx:nginx /var/cache/nginx /var/lib/nginx /var/log/nginx \
+    && chmod -R 755 /var/cache/nginx \
     \
     # Install the AWS CLI, have to force install into system packages
-    pip install --break-system-packages --upgrade pip awscli && \
-    apk -v --purge del py-pip
+    && pip install --break-system-packages --upgrade pip awscli \
+    && apk -v --purge del py-pip
 
 # Copy local file requirements
 COPY bin/startup.sh /startup.sh

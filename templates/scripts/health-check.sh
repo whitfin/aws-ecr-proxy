@@ -1,2 +1,2 @@
 #!/bin/sh
-wget localhost:$PROXY_PORT/health -q -O - > /dev/null 2>&1
+wget localhost:$PROXY_PORT/_health -q -O - > /dev/null 2>&1
